@@ -3,6 +3,9 @@ import unittest
 import numpy as np
 import sys
 
+# ##############################################
+#' ## Random Generator Class
+# ##############################################
 class RandomGen(object):
      # Values that may be returned by next_num()
      _random_nums = [-1, 0, 1, 2, 3]
@@ -22,20 +25,28 @@ class RandomGen(object):
 
          # Loop through the distribution step function and
          # break (return) as soon as the number x is less
-         # than the value of the distribution function
+         # than or equal to the value of the distribution 
+         # function
          for i, d in enumerate(self._distribution):
              if ( x <= d ):
                  return self._random_nums[i]
 
 
+# ##############################################
+#' ## Unit Tests
+# ##############################################
 class TestRandomGenMethods(unittest.TestCase):
     gen = RandomGen()
     def test_probabilities_non_negative(self):
-        self.assertTrue(np.all(np.array(self.gen._probabilities) >= 0 ))
+        probs = np.array(self.gen._probabilities)
+        self.assertTrue(np.all(probs >= 0)
     def test_probabilities_sum_to_one(self):
-        self.assertTrue(np.abs(np.sum(self.gen._probabilities) - 1) <= np.spacing(1) )
+        prob_sum = np.sum(self.gen._probabilities)
+        self.assertTrue(np.abs(prob_sum - 1) <= np.spacing(1))
     def test_lengths_of_arrays(self):
-        self.assertTrue(len(self.gen._probabilities) == len(self.gen._random_nums))
+        l1 = len(self.gen._probabilities)
+        l2 = len(self.gen._random_nums)
+        self.assertTrue( l1 == l2 )
     def test_values_of_random_numbers(self):
         """
         Test that the random numbers returned are contained in the 
@@ -47,6 +58,9 @@ class TestRandomGenMethods(unittest.TestCase):
             self.assertTrue(num in self.gen._random_nums)
 
 
+# ##############################################
+#' ## To run as a script
+# ##############################################
 if __name__ == '__main__':
     # Number of times next_num is called can
     # be passed from the command line
@@ -69,15 +83,15 @@ if __name__ == '__main__':
         num = gen.next_num()
         count[num] = count[num] + 1
 
-    print('==========================')
-    print('Total count = ' + str(N) )
-    print('==========================')
+    print('============================================')
+    print('Total random numbers generated = ' + str(N) )
+    print('============================================')
     for k in RandomGen._random_nums:
         print(str(k) + ': ' + str(count[k]) + ' times')
 
-    print('==========================')
+    print('============================================')
     print('* probability estimates  *')
-    print('==========================')
+    print('============================================')
     for k in RandomGen._random_nums:
         print('P(x = ' + str(k) + ') = ' + str(count[k]/N))
 
