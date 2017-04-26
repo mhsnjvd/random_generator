@@ -1,2 +1,8 @@
 *.pyc
 *.pdf
+*.png
+*.csv
+*.gz
+*.aux
+*.out
+output.txt
